@@ -19,3 +19,13 @@ export async function buscarPaisPorNome(nome) {
 
   return dados[0];
 }
+
+export async function buscarPaisPorCapital(capital) {
+  const termo = encodeURIComponent(capital.trim());
+
+  const dados = await buscarNaApi(
+    `/capital/${termo}?fields=name,flags`
+  );
+
+  return dados[0];
+}
