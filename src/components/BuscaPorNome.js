@@ -18,24 +18,25 @@ export default function BuscaPorNome() {
   const [carregando, setCarregando] = useState(false);
   const [mensagemErro, setMensagemErro] = useState("");
 
-  async function pesquisar() {
+  function pesquisar() {
     if (!nomePais.trim()) {
       setMensagemErro("Digite o nome de um país.");
       return;
     }
 
-    try {
-      setCarregando(true);
-      setPais(null);
-      setMensagemErro("");
+    setCarregando(true);
+    setPais(null);
+    setMensagemErro("");
 
-      const resultado = await buscarPaisPorNome(nomePais);
-      setPais(resultado);
-    } catch (erro) {
-      setMensagemErro("País não encontrado.");
-    } finally {
-      setCarregando(false);
-    }
+    buscarPaisPorNome(nomePais)
+      .then((resultado) => {
+        setPais(resultado);
+        setCarregando(false);
+      })
+      .catch(() => {
+        setMensagemErro("País não encontrado.");
+        setCarregando(false);
+      });
   }
 
   function abrirOpenStreetMap() {

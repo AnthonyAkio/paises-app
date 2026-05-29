@@ -1,31 +1,25 @@
-const BASE_URL = "https://restcountries.com/v3.1";
+import axios from "axios";
 
-async function buscarNaApi(endpoint) {
-  const resposta = await fetch(`${BASE_URL}${endpoint}`);
-
-  if (!resposta.ok) {
-    throw new Error("Não foi possível buscar os dados.");
-  }
-
-  return resposta.json();
-}
+const api = axios.create({
+  baseURL: "https://restcountries.com/v3.1",
+});
 
 export async function buscarPaisPorNome(nome) {
   const termo = encodeURIComponent(nome.trim());
 
-  const dados = await buscarNaApi(
+  const resposta = await api.get(
     `/name/${termo}?fields=name,translations,maps`
   );
 
-  return dados[0];
+  return resposta.data[0];
 }
 
 export async function buscarPaisPorCapital(capital) {
   const termo = encodeURIComponent(capital.trim());
 
-  const dados = await buscarNaApi(
+  const resposta = await api.get(
     `/capital/${termo}?fields=name,flags`
   );
 
-  return dados[0];
+  return resposta.data[0];
 }
